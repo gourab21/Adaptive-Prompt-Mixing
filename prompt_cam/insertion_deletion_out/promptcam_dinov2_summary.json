@@ -1,0 +1,17 @@
+{
+  "method": "Prompt-CAM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "CUB-200",
+  "checkpoint": "output/vit_base_patch14_dinov2/cub/pcam_prompt_cam_200_sgd/cub/2026-10-28-19:00/model.pt",
+  "n_images": 5794,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 72.22989299275112,
+  "insertion": 0.6314869330326965,
+  "insertion_sem": 0.004876760861229029,
+  "deletion": 0.07367579683075481,
+  "deletion_sem": 0.001389745841902215,
+  "insertion_correct_only": 0.8345072049468032,
+  "deletion_correct_only": 0.09314267751678997
+}

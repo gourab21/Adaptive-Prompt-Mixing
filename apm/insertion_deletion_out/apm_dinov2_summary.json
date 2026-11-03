@@ -1,0 +1,17 @@
+{
+  "method": "APM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "CUB-200",
+  "checkpoint": "output/vit_base_patch14_dinov2/cub/linear_sgd/cub/2026-10-07-07:53/model.pt",
+  "n_images": 5794,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 85.10528132550915,
+  "insertion": 0.7919465756448391,
+  "insertion_sem": 0.004089964221681771,
+  "deletion": 0.10201202946392143,
+  "deletion_sem": 0.0011785791986776207,
+  "insertion_correct_only": 0.9114383027022989,
+  "deletion_correct_only": 0.1141578865297805
+}
