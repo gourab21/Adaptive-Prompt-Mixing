@@ -1,0 +1,283 @@
+import torch
+import os
+import torch.nn as nn
+from timm.scheduler.cosine_lr import CosineLRScheduler
+from collections import OrderedDict
+from engine.optimizer import make_optimizer
+from utils.misc import AverageMeter, EarlyStop
+from utils.setup_logging import get_logger
+from timm.utils import accuracy, update_summary
+import numpy as np
+import torch.distributed as dist
+
+
+logger = get_logger("Prompt_CAM")
+
+torch.backends.cudnn.benchmark = False
+def reduce_tensor(tensor):
+    if not dist.is_available() or not dist.is_initialized():
+        return tensor
+    dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+    return tensor
+
+class Trainer():
+    """
+    a trainer with below logics:
+
+    1. Build optimizer, scheduler
+    2. Load checkpoints if provided
+    3. Train and eval at each epoch
+    """
+
+    def __init__(
+            self,
+            model, tune_parameters, params
+    ) -> None:
+        self.params = params
+        self.model = model
+        self.device = params.device
+        self.cls_criterion = nn.CrossEntropyLoss()
+        ############# Added module (APM v2) #############
+        # Entropy penalty on the ground-truth class's last-layer attention row
+        # over patch tokens — same row used for the insertion/deletion saliency
+        # map. Pulling its entropy down concentrates it onto fewer patches,
+        # which is what deletion AUC rewards (CLAUDE.md open issue #1).
+        self.entropy_weight = getattr(params, 'entropy_weight', 0.0)
+        ############# Added module end #############
+
+        if 'test_data' not in params:
+            # solver related
+            if self.is_main_process():
+                logger.info("\tSetting up the optimizer...")
+            self.optimizer = make_optimizer(tune_parameters, params)
+            self.scheduler = CosineLRScheduler(self.optimizer, t_initial=params.epoch,
+                                               warmup_t=params.warmup_epoch, lr_min=params.lr_min,
+                                               warmup_lr_init=params.warmup_lr_init)
+            self.total_epoch = self.params.epoch
+            if self.params.early_patience > 0:
+                self.early_stop_check = EarlyStop(self.params.early_patience)
+
+    def forward_one_batch(self, samples, targets, is_train):
+        """Train a single (full) epoch on the model using the given
+        data loader.
+
+        Args:
+            samples
+            targets
+            is_train: bool
+        Returns:
+            loss
+            outputs: output logits
+        """
+        # move data to device
+        samples = samples.to(self.device, non_blocking=True)  # (batchsize, 2048)
+        targets = targets.to(self.device, non_blocking=True)  # (batchsize, )
+
+        # forward
+        with torch.set_grad_enabled(is_train):
+            outputs, attn_map = self.model(samples)  # (batchsize, num_cls)
+            if self.params.train_type == 'prompt_cam':
+                outputs = outputs.squeeze(-1)
+            loss = self.cls_criterion(outputs, targets)
+
+            ############# Added module (APM v2) #############
+            if is_train and self.entropy_weight > 0 and attn_map is not None:
+                loss = loss + self.entropy_weight * self._saliency_entropy(attn_map, targets)
+            ############# Added module end #############
+
+            if loss == float('inf'):
+                if self.is_main_process():
+                    logger.info(
+                        "encountered infinite loss, skip gradient updating for this batch!"
+                    )
+                return -1, -1, (-1, -1)
+            elif torch.isnan(loss).any():
+                if self.is_main_process():
+                    logger.info(
+                        "encountered nan loss, skip gradient updating for this batch!"
+                    )
+                return -1, -1, (-1, -1)
+
+        acc1, acc5 = accuracy(outputs, targets, topk=(1, 5))
+        # =======backward and optim step only if in training phase... =========
+        if is_train:
+            self.optimizer.zero_grad()
+            loss.backward()
+            #for name, param in self.model.named_parameters():
+            #    if param.grad is not None:
+            #        print(f"After backward: {name} has grad with mean {param.grad.mean().item()}")
+    
+            self.optimizer.step()
+
+        return loss, outputs, (acc1, acc5)
+
+    ############# Added module (APM v2) #############
+    def _saliency_entropy(self, attn_map, targets):
+        """Mean normalized entropy of the ground-truth class's attention row
+        over patch tokens, averaged over heads and batch.
+
+        attn_map: (B, heads, L, L), L = K (prompts) + 1 (cls) + N (patches).
+        targets:  (B,) ground-truth class index == prompt index, in [0, K).
+        Low entropy == saliency mass concentrated on few patches (sharper map,
+        better deletion AUC); high entropy == diffuse map (better insertion,
+        worse deletion). We minimize this.
+        """
+        K = self.params.vpt_num
+        B = attn_map.shape[0]
+        batch_idx = torch.arange(B, device=attn_map.device)
+        # (B, heads, L) -> keep only the patch-token columns -> (B, heads, N)
+        row = attn_map[batch_idx, :, targets, (K + 1):]
+        row = row.mean(dim=1)  # average over heads -> (B, N)
+        p = row / (row.sum(dim=-1, keepdim=True) + 1e-8)
+        entropy = -(p * torch.log(p + 1e-8)).sum(dim=-1)  # (B,)
+        return entropy.mean()
+    ############# Added module end #############
+
+    def is_main_process(self):
+        return (not getattr(self.params, "distributed", False)) or \
+           torch.distributed.get_rank() == 0
+
+
+    def train_one_epoch(self, epoch, loader):
+        loss_m = AverageMeter()
+        top1_m = AverageMeter()
+        top5_m = AverageMeter()
+        if getattr(self.params, "distributed", False):
+            if hasattr(loader.sampler, "set_epoch"):
+                loader.sampler.set_epoch(epoch)
+
+        lr = self.scheduler._get_lr(epoch)
+        if self.is_main_process():
+            logger.info(
+                "Training {} / {} epoch, with learning rate {}".format(
+                    epoch + 1, self.total_epoch, lr
+                )
+        )
+        # Enable training mode
+        self.model.train()
+
+        num_updates = epoch * len(loader)
+        for idx, (samples, targets) in enumerate(loader):
+            train_loss, _, (acc1, acc5) = self.forward_one_batch(samples, targets, True)
+            if not isinstance(train_loss, int):
+                loss_m.update(train_loss.item(), samples.shape[0])
+                top1_m.update(acc1.item(), samples.shape[0])
+                top5_m.update(acc5.item(), samples.shape[0])
+            del train_loss, acc1, acc5, _, samples, targets
+            num_updates += 1
+            self.scheduler.step_update(num_updates=num_updates, metric=loss_m.avg)
+
+        if self.is_main_process():
+            logger.info(
+                "Epoch {} / {}: ".format(epoch + 1, self.total_epoch)
+                + "average train loss: {:.2f}, ".format(loss_m.avg)
+                + "average train top1: {:.2f} ".format(top1_m.avg)
+                + "average train top5: {:.2f}".format(top5_m.avg))
+
+        return OrderedDict(
+            [('loss', round(loss_m.avg, 2)), ('top1', round(top1_m.avg, 2)), ('top5', round(top5_m.avg, 2))])
+
+    def train_classifier(self, train_loader, val_loader, test_loader):
+        """
+        Train a classifier using epoch
+        """
+
+        for epoch in range(self.total_epoch):
+            train_metrics = self.train_one_epoch(epoch, train_loader)
+
+            if (epoch % self.params.eval_freq == 0) or epoch == self.total_epoch - 1:
+                if test_loader is not None:
+                    eval_metrics = self.eval_classifier(
+                        test_loader, "test")
+                elif val_loader is not None:
+                    eval_metrics = self.eval_classifier(val_loader, "val")
+                else:
+                    raise Exception('Both val and test loaders are missing. ')
+
+                if self.params.early_patience > 0:
+                    stop, save_model = self.early_stop_check.early_stop(eval_metrics)
+                    if save_model and self.params.store_ckp:
+                        if self.is_main_process():
+                            model_to_save = self.model.module if hasattr(self.model, "module") else self.model
+                            torch.save({'model_state_dict': model_to_save.state_dict()},
+                                   os.path.join(self.params.output_dir, 'model.pt'))
+
+                    if stop:
+                        return train_metrics, self.early_stop_check.max_metrics, eval_metrics
+                if self.params.debug:
+                    update_summary(
+                        epoch, train_metrics, eval_metrics, os.path.join(self.params.output_dir, 'summary.csv'),
+                        write_header=epoch == 0)
+            self.scheduler.step(epoch)
+
+        if self.params.store_ckp and not os.path.isfile(os.path.join(self.params.output_dir, 'model.pt')):
+            if self.is_main_process():
+                model_to_save = self.model.module if hasattr(self.model, "module") else self.model
+                torch.save({'model_state_dict': model_to_save.state_dict()},
+                            os.path.join(self.params.output_dir, 'model.pt'))
+        return train_metrics, self.early_stop_check.max_metrics, eval_metrics
+
+    @torch.no_grad()
+    def eval_classifier(self, loader, prefix):
+        self.model.eval()
+
+        total_samples = torch.tensor(0.0, device=self.device)
+        top1_correct = torch.tensor(0.0, device=self.device)
+        top5_correct = torch.tensor(0.0, device=self.device)
+        total_loss = torch.tensor(0.0, device=self.device)
+
+        for samples, targets in loader:
+            loss, outputs, (acc1, acc5) = self.forward_one_batch(samples, targets, False)
+
+            if isinstance(loss, int):
+                continue
+
+            batch_size = samples.size(0)
+            total_samples += batch_size
+            total_loss += loss * batch_size
+            top1_correct += acc1 * batch_size / 100.0
+            top5_correct += acc5 * batch_size / 100.0
+
+        # -------- DDP sync --------
+        if getattr(self.params, "distributed", False):
+            reduce_tensor(total_samples)
+            reduce_tensor(total_loss)
+            reduce_tensor(top1_correct)
+            reduce_tensor(top5_correct)
+
+        # -------- compute final metrics on rank-0 --------
+        avg_loss = (total_loss / total_samples).item()
+        top1 = (top1_correct / total_samples * 100).item()
+        top5 = (top5_correct / total_samples * 100).item()
+
+        if self.is_main_process():
+            logger.info(
+                f"Inference ({prefix}): "
+                f"loss {avg_loss:.2f}, "
+                f"top1 {top1:.2f}, "
+                f"top5 {top5:.2f}"
+            )
+
+        return OrderedDict(
+            [('loss', round(avg_loss, 2)),
+            ('top1', round(top1, 2)),
+            ('top5', round(top5, 2))]
+        )
+
+    def load_weight(self):
+        state = torch.load(self.params.output_dir + '/model.pt', map_location="cpu")
+        model_to_load = self.model.module if hasattr(self.model, "module") else self.model
+        model_to_load.load_state_dict(state['model_state_dict'])
+
+
+    @torch.no_grad()
+    def collect_logits(self, loader):
+        self.model.eval()
+        all_logits = []
+        gt = []
+        with torch.no_grad():
+            for batch_idx, (samples, targets) in enumerate(loader):
+                loss, outputs, (acc1, acc5) = self.forward_one_batch(samples, targets, False)
+                all_logits.append(outputs.cpu().detach().numpy())
+                gt.append(targets.cpu().detach().numpy())
+        return np.concatenate(all_logits, axis=0), np.concatenate(gt, axis=0)

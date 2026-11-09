@@ -1,0 +1,17 @@
+{
+  "method": "APM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "cub",
+  "checkpoint": "/home/astra/Desktop/XAI/APM_Final/apm_v2/./output/vit_base_patch14_dinov2/cub/linear_sgd/cub/2026-11-08-19:06/model.pt",
+  "n_images": 5794,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 85.62305833620987,
+  "insertion": 0.798758238686883,
+  "insertion_sem": 0.004095154336838967,
+  "deletion": 0.08577495356462617,
+  "deletion_sem": 0.0009616144729175796,
+  "insertion_correct_only": 0.9159546344643286,
+  "deletion_correct_only": 0.09522836277976617
+}

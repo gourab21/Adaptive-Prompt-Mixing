@@ -1,0 +1,17 @@
+{
+  "method": "APM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "medleaf",
+  "checkpoint": "/home/astra/Desktop/XAI/APM_Final/apm_v2/./output/vit_base_patch14_dinov2/medleaf/linear_sgd/standard/2026-11-09-05:58/model.pt",
+  "n_images": 419,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 100.0,
+  "insertion": 0.9365818791543296,
+  "insertion_sem": 0.0029969415173100207,
+  "deletion": 0.27742079480017706,
+  "deletion_sem": 0.005818529044894559,
+  "insertion_correct_only": 0.9365818791543296,
+  "deletion_correct_only": 0.27742079480017706
+}

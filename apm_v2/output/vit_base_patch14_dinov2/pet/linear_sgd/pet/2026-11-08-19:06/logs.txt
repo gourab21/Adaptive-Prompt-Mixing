@@ -1,0 +1,1 @@
+[11/08 19:06:22][INFO] Prompt_CAM:   64: Rank of current process: 0. World size: 1

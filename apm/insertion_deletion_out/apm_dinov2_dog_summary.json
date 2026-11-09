@@ -1,0 +1,17 @@
+{
+  "method": "APM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "dog",
+  "checkpoint": "output/vit_base_patch14_dinov2/dog/linear_sgd/dog/2026-10-31-11:46/model.pt",
+  "n_images": 4162,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 84.4065353195579,
+  "insertion": 0.7363447137780299,
+  "insertion_sem": 0.004593407554590324,
+  "deletion": 0.20699426561644385,
+  "deletion_sem": 0.0026560264697594723,
+  "insertion_correct_only": 0.8465272630358915,
+  "deletion_correct_only": 0.23374939034402137
+}

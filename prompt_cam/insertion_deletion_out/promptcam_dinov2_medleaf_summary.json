@@ -1,0 +1,17 @@
+{
+  "method": "Prompt-CAM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "medleaf",
+  "checkpoint": "output/vit_base_patch14_dinov2/medleaf/pcam_prompt_cam_30_sgd/standard/2026-10-30-23:21/model.pt",
+  "n_images": 419,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 99.52267303102626,
+  "insertion": 0.7826385147909705,
+  "insertion_sem": 0.00584309032487376,
+  "deletion": 0.2257423177298019,
+  "deletion_sem": 0.007358672639693869,
+  "insertion_correct_only": 0.7842629998018232,
+  "deletion_correct_only": 0.22672530364654256
+}

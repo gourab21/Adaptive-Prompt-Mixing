@@ -1,0 +1,17 @@
+{
+  "method": "Prompt-CAM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "pet",
+  "checkpoint": "output/vit_base_patch14_dinov2/pet/pcam_prompt_cam_37_sgd/pet/2026-10-30-22:24/model.pt",
+  "n_images": 3669,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 92.8045789043336,
+  "insertion": 0.840092300878243,
+  "insertion_sem": 0.003637332110553636,
+  "deletion": 0.2470949836332796,
+  "deletion_sem": 0.0031421135027003555,
+  "insertion_correct_only": 0.8917118985169573,
+  "deletion_correct_only": 0.2610022917626012
+}
