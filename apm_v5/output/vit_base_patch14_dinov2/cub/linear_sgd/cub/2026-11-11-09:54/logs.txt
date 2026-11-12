@@ -1,0 +1,323 @@
+[11/11 09:54:16][INFO] Prompt_CAM:   64: Rank of current process: 0. World size: 1
+[11/11 09:54:16][INFO] Prompt_CAM:   66: Environment info:
+-------------------  --------------------------------------------------
+Python               3.10.21 (main, Aug 27 2026, 14:42:07) [GCC 14.3.0]
+ENV_MODULE           <not set>
+PyTorch              2.6.0+cu124
+PyTorch Debug Build  False
+CUDA available       True
+CUDA ID              0
+GPU 0                NVIDIA RTX A6000
+-------------------  --------------------------------------------------
+PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2024.2-Product Build 20240605 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.5.3 (Git Hash 66f0cb9eb66affd2da3bf5f8d897376f04aae6af)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.4
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 90.1
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=2236df1770800ffea5697b11b0bb0d910b2e59e1, CUDA_VERSION=12.4, CUDNN_VERSION=9.1.0, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.6.0, USE_CUDA=ON, USE_CUDNN=ON, USE_CUSPARSELT=1, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+[11/11 09:54:16][INFO] Prompt_CAM:   70: Training with config:
+[11/11 09:54:16][INFO] Prompt_CAM:   71: Namespace(pretrained_weights='vit_base_patch14_dinov2', drop_path_rate=0.1, model='dinov2', train_type='apm', optimizer='sgd', lr=0.005, epoch=130, warmup_epoch=20, lr_min=1e-06, warmup_lr_init=0, batch_size=16, test_batch_size=32, wd=0.001, momentum=0.9, early_patience=131, data='cub', data_path='./data/images/cub', crop_size=224, final_run=True, normalized=True, vpt_mode=None, vpt_num=200, vpt_layer=None, vpt_dropout=0.1, entropy_weight=0.05, entropy_warmup_epochs=20, topk_weight=0.02, topk_frac=0.1, margin_weight=0.05, margin=0.05, margin_frac=0.5, full=False, gpu_num=1, debug=True, random_seed=42, eval_freq=10, store_ckp=True, final_acc_hp=True, config='experiment/config/apm/dinov2/cub/args.yaml', vis_attn=False, distributed=False, local_rank=0, output_dir='./output/vit_base_patch14_dinov2/cub/linear_sgd/cub/2026-11-11-09:54')
+[11/11 09:54:16][INFO] Prompt_CAM:   74: Start loading cub
+[11/11 09:54:16][INFO] Prompt_CAM:   17: Loading CUB data ...
+[11/11 09:54:16][INFO] Prompt_CAM:   19: Loading training data (final training data for cub)...
+[11/11 09:54:16][INFO] Prompt_CAM:   84: Finish setup loaders
+[11/11 09:54:18][INFO] Prompt_CAM:   31: Trainable params:
+[11/11 09:54:18][INFO] Prompt_CAM:   38: 	head.weight, 768, torch.Size([1, 768])
+[11/11 09:54:18][INFO] Prompt_CAM:   38: 	head.bias, 1, torch.Size([1])
+[11/11 09:54:18][INFO] Prompt_CAM:   38: 	apm.prompt_embeddings, 1843200, torch.Size([12, 200, 768])
+[11/11 09:54:18][INFO] Prompt_CAM:   38: 	apm.log_temp, 1, torch.Size([1])
+[11/11 09:54:18][INFO] Prompt_CAM:   38: 	apm.mixer.weight, 153600, torch.Size([200, 768])
+[11/11 09:54:18][INFO] Prompt_CAM:   85: Total Parameters: 87722498	 Gradient Parameters: 1997570	 Gradient Parameters No Head: 1996801
+[11/11 09:54:18][INFO] Prompt_CAM:   90: total tuned percent:2.28 %
+[11/11 09:54:18][INFO] Prompt_CAM:   91: total tuned percent no head:2.28 %
+[11/11 09:54:18][INFO] Prompt_CAM:   93: Fine-tuned Parameters:
+[11/11 09:54:18][INFO] Prompt_CAM:   96: head.weight
+[11/11 09:54:18][INFO] Prompt_CAM:   96: head.bias
+[11/11 09:54:18][INFO] Prompt_CAM:   96: apm.prompt_embeddings
+[11/11 09:54:18][INFO] Prompt_CAM:   96: apm.log_temp
+[11/11 09:54:18][INFO] Prompt_CAM:   96: apm.mixer.weight
+[11/11 09:54:19][INFO] Prompt_CAM:   76: 	Setting up the optimizer...
+[11/11 09:54:19][INFO] Prompt_CAM:  245: Training 1 / 130 epoch, with learning rate [0.0]
+[11/11 09:55:57][INFO] Prompt_CAM:  265: Epoch 1 / 130: average train loss: 5.33, average train top1: 0.52 average train top5: 2.69
+[11/11 09:56:38][INFO] Prompt_CAM:  348: Inference (test): loss 5.31, top1 0.50, top5 2.55
+[11/11 09:56:38][INFO] Prompt_CAM:  245: Training 2 / 130 epoch, with learning rate [0.00025]
+[11/11 09:58:15][INFO] Prompt_CAM:  265: Epoch 2 / 130: average train loss: 5.34, average train top1: 0.58 average train top5: 2.56
+[11/11 09:58:15][INFO] Prompt_CAM:  245: Training 3 / 130 epoch, with learning rate [0.0005]
+[11/11 09:59:52][INFO] Prompt_CAM:  265: Epoch 3 / 130: average train loss: 5.35, average train top1: 0.53 average train top5: 2.51
+[11/11 09:59:52][INFO] Prompt_CAM:  245: Training 4 / 130 epoch, with learning rate [0.00075]
+[11/11 10:01:31][INFO] Prompt_CAM:  265: Epoch 4 / 130: average train loss: 5.36, average train top1: 0.48 average train top5: 2.86
+[11/11 10:01:31][INFO] Prompt_CAM:  245: Training 5 / 130 epoch, with learning rate [0.001]
+[11/11 10:03:08][INFO] Prompt_CAM:  265: Epoch 5 / 130: average train loss: 5.37, average train top1: 0.62 average train top5: 2.64
+[11/11 10:03:08][INFO] Prompt_CAM:  245: Training 6 / 130 epoch, with learning rate [0.00125]
+[11/11 10:04:45][INFO] Prompt_CAM:  265: Epoch 6 / 130: average train loss: 5.38, average train top1: 0.77 average train top5: 2.77
+[11/11 10:04:45][INFO] Prompt_CAM:  245: Training 7 / 130 epoch, with learning rate [0.0015]
+[11/11 10:06:22][INFO] Prompt_CAM:  265: Epoch 7 / 130: average train loss: 5.38, average train top1: 0.67 average train top5: 3.04
+[11/11 10:06:22][INFO] Prompt_CAM:  245: Training 8 / 130 epoch, with learning rate [0.00175]
+[11/11 10:07:59][INFO] Prompt_CAM:  265: Epoch 8 / 130: average train loss: 5.37, average train top1: 0.90 average train top5: 3.93
+[11/11 10:07:59][INFO] Prompt_CAM:  245: Training 9 / 130 epoch, with learning rate [0.002]
+[11/11 10:09:37][INFO] Prompt_CAM:  265: Epoch 9 / 130: average train loss: 5.34, average train top1: 1.02 average train top5: 4.68
+[11/11 10:09:37][INFO] Prompt_CAM:  245: Training 10 / 130 epoch, with learning rate [0.0022500000000000003]
+[11/11 10:11:14][INFO] Prompt_CAM:  265: Epoch 10 / 130: average train loss: 5.27, average train top1: 1.24 average train top5: 5.00
+[11/11 10:11:14][INFO] Prompt_CAM:  245: Training 11 / 130 epoch, with learning rate [0.0025]
+[11/11 10:12:53][INFO] Prompt_CAM:  265: Epoch 11 / 130: average train loss: 5.24, average train top1: 1.44 average train top5: 6.00
+[11/11 10:13:34][INFO] Prompt_CAM:  348: Inference (test): loss 4.93, top1 1.92, top5 7.92
+[11/11 10:13:34][INFO] Prompt_CAM:  245: Training 12 / 130 epoch, with learning rate [0.00275]
+[11/11 10:15:11][INFO] Prompt_CAM:  265: Epoch 12 / 130: average train loss: 5.20, average train top1: 1.47 average train top5: 6.67
+[11/11 10:15:11][INFO] Prompt_CAM:  245: Training 13 / 130 epoch, with learning rate [0.003]
+[11/11 10:16:49][INFO] Prompt_CAM:  265: Epoch 13 / 130: average train loss: 5.19, average train top1: 1.85 average train top5: 7.30
+[11/11 10:16:49][INFO] Prompt_CAM:  245: Training 14 / 130 epoch, with learning rate [0.0032500000000000003]
+[11/11 10:18:26][INFO] Prompt_CAM:  265: Epoch 14 / 130: average train loss: 5.14, average train top1: 2.32 average train top5: 9.04
+[11/11 10:18:26][INFO] Prompt_CAM:  245: Training 15 / 130 epoch, with learning rate [0.0035]
+[11/11 10:20:03][INFO] Prompt_CAM:  265: Epoch 15 / 130: average train loss: 5.09, average train top1: 2.96 average train top5: 10.63
+[11/11 10:20:03][INFO] Prompt_CAM:  245: Training 16 / 130 epoch, with learning rate [0.00375]
+[11/11 10:21:41][INFO] Prompt_CAM:  265: Epoch 16 / 130: average train loss: 5.05, average train top1: 3.71 average train top5: 13.42
+[11/11 10:21:41][INFO] Prompt_CAM:  245: Training 17 / 130 epoch, with learning rate [0.004]
+[11/11 10:23:18][INFO] Prompt_CAM:  265: Epoch 17 / 130: average train loss: 4.94, average train top1: 4.93 average train top5: 15.36
+[11/11 10:23:18][INFO] Prompt_CAM:  245: Training 18 / 130 epoch, with learning rate [0.00425]
+[11/11 10:24:55][INFO] Prompt_CAM:  265: Epoch 18 / 130: average train loss: 4.83, average train top1: 5.93 average train top5: 18.70
+[11/11 10:24:55][INFO] Prompt_CAM:  245: Training 19 / 130 epoch, with learning rate [0.0045000000000000005]
+[11/11 10:26:33][INFO] Prompt_CAM:  265: Epoch 19 / 130: average train loss: 4.67, average train top1: 8.51 average train top5: 23.26
+[11/11 10:26:33][INFO] Prompt_CAM:  245: Training 20 / 130 epoch, with learning rate [0.00475]
+[11/11 10:28:10][INFO] Prompt_CAM:  265: Epoch 20 / 130: average train loss: 4.58, average train top1: 9.46 average train top5: 24.95
+[11/11 10:28:10][INFO] Prompt_CAM:  245: Training 21 / 130 epoch, with learning rate [0.004713697336120198]
+[11/11 10:29:47][INFO] Prompt_CAM:  265: Epoch 21 / 130: average train loss: 4.38, average train top1: 12.37 average train top5: 29.51
+[11/11 10:30:28][INFO] Prompt_CAM:  348: Inference (test): loss 3.39, top1 21.18, top5 49.38
+[11/11 10:30:29][INFO] Prompt_CAM:  245: Training 22 / 130 epoch, with learning rate [0.004684983097549982]
+[11/11 10:32:06][INFO] Prompt_CAM:  265: Epoch 22 / 130: average train loss: 4.21, average train top1: 14.37 average train top5: 32.69
+[11/11 10:32:06][INFO] Prompt_CAM:  245: Training 23 / 130 epoch, with learning rate [0.004654993182366683]
+[11/11 10:33:44][INFO] Prompt_CAM:  265: Epoch 23 / 130: average train loss: 4.03, average train top1: 17.30 average train top5: 37.87
+[11/11 10:33:44][INFO] Prompt_CAM:  245: Training 24 / 130 epoch, with learning rate [0.004623745103836242]
+[11/11 10:35:21][INFO] Prompt_CAM:  265: Epoch 24 / 130: average train loss: 3.85, average train top1: 21.39 average train top5: 41.78
+[11/11 10:35:21][INFO] Prompt_CAM:  245: Training 25 / 130 epoch, with learning rate [0.004591257109956562]
+[11/11 10:36:58][INFO] Prompt_CAM:  265: Epoch 25 / 130: average train loss: 3.72, average train top1: 22.78 average train top5: 44.22
+[11/11 10:36:58][INFO] Prompt_CAM:  245: Training 26 / 130 epoch, with learning rate [0.004557548172801194]
+[11/11 10:38:36][INFO] Prompt_CAM:  265: Epoch 26 / 130: average train loss: 3.59, average train top1: 25.80 average train top5: 46.76
+[11/11 10:38:36][INFO] Prompt_CAM:  245: Training 27 / 130 epoch, with learning rate [0.004522637977440181]
+[11/11 10:40:13][INFO] Prompt_CAM:  265: Epoch 27 / 130: average train loss: 3.47, average train top1: 27.27 average train top5: 50.75
+[11/11 10:40:13][INFO] Prompt_CAM:  245: Training 28 / 130 epoch, with learning rate [0.004486546910444529]
+[11/11 10:41:50][INFO] Prompt_CAM:  265: Epoch 28 / 130: average train loss: 3.35, average train top1: 29.09 average train top5: 52.19
+[11/11 10:41:50][INFO] Prompt_CAM:  245: Training 29 / 130 epoch, with learning rate [0.004449296047981024]
+[11/11 10:43:28][INFO] Prompt_CAM:  265: Epoch 29 / 130: average train loss: 3.26, average train top1: 31.94 average train top5: 53.66
+[11/11 10:43:28][INFO] Prompt_CAM:  245: Training 30 / 130 epoch, with learning rate [0.004410907143504348]
+[11/11 10:45:06][INFO] Prompt_CAM:  265: Epoch 30 / 130: average train loss: 3.19, average train top1: 33.67 average train top5: 55.28
+[11/11 10:45:06][INFO] Prompt_CAM:  245: Training 31 / 130 epoch, with learning rate [0.004371402615053668]
+[11/11 10:46:44][INFO] Prompt_CAM:  265: Epoch 31 / 130: average train loss: 3.08, average train top1: 35.39 average train top5: 57.72
+[11/11 10:47:25][INFO] Prompt_CAM:  348: Inference (test): loss 1.62, top1 56.99, top5 84.35
+[11/11 10:47:25][INFO] Prompt_CAM:  245: Training 32 / 130 epoch, with learning rate [0.0043308055321611355]
+[11/11 10:49:02][INFO] Prompt_CAM:  265: Epoch 32 / 130: average train loss: 3.02, average train top1: 36.03 average train top5: 59.44
+[11/11 10:49:02][INFO] Prompt_CAM:  245: Training 33 / 130 epoch, with learning rate [0.004289139602379931]
+[11/11 10:50:40][INFO] Prompt_CAM:  265: Epoch 33 / 130: average train loss: 2.91, average train top1: 38.89 average train top5: 60.54
+[11/11 10:50:40][INFO] Prompt_CAM:  245: Training 34 / 130 epoch, with learning rate [0.004246429157439718]
+[11/11 10:52:17][INFO] Prompt_CAM:  265: Epoch 34 / 130: average train loss: 2.91, average train top1: 40.01 average train top5: 61.88
+[11/11 10:52:17][INFO] Prompt_CAM:  245: Training 35 / 130 epoch, with learning rate [0.0042026991390376]
+[11/11 10:53:53][INFO] Prompt_CAM:  265: Epoch 35 / 130: average train loss: 2.86, average train top1: 40.73 average train top5: 62.08
+[11/11 10:53:53][INFO] Prompt_CAM:  245: Training 36 / 130 epoch, with learning rate [0.004157975084272868]
+[11/11 10:55:30][INFO] Prompt_CAM:  265: Epoch 36 / 130: average train loss: 2.75, average train top1: 42.10 average train top5: 63.80
+[11/11 10:55:30][INFO] Prompt_CAM:  245: Training 37 / 130 epoch, with learning rate [0.004112283110734059]
+[11/11 10:57:07][INFO] Prompt_CAM:  265: Epoch 37 / 130: average train loss: 2.75, average train top1: 43.43 average train top5: 64.10
+[11/11 10:57:07][INFO] Prompt_CAM:  245: Training 38 / 130 epoch, with learning rate [0.0040656499012470156]
+[11/11 10:58:44][INFO] Prompt_CAM:  265: Epoch 38 / 130: average train loss: 2.70, average train top1: 43.67 average train top5: 64.97
+[11/11 10:58:44][INFO] Prompt_CAM:  245: Training 39 / 130 epoch, with learning rate [0.004018102688292869]
+[11/11 11:00:20][INFO] Prompt_CAM:  265: Epoch 39 / 130: average train loss: 2.64, average train top1: 45.55 average train top5: 66.11
+[11/11 11:00:20][INFO] Prompt_CAM:  245: Training 40 / 130 epoch, with learning rate [0.003969669238105037]
+[11/11 11:01:57][INFO] Prompt_CAM:  265: Epoch 40 / 130: average train loss: 2.55, average train top1: 46.72 average train top5: 67.26
+[11/11 11:01:57][INFO] Prompt_CAM:  245: Training 41 / 130 epoch, with learning rate [0.003920377834454525]
+[11/11 11:03:34][INFO] Prompt_CAM:  265: Epoch 41 / 130: average train loss: 2.56, average train top1: 47.11 average train top5: 68.23
+[11/11 11:04:14][INFO] Prompt_CAM:  348: Inference (test): loss 1.14, top1 70.71, top5 91.08
+[11/11 11:04:15][INFO] Prompt_CAM:  245: Training 42 / 130 epoch, with learning rate [0.0038702572621329982]
+[11/11 11:05:51][INFO] Prompt_CAM:  265: Epoch 42 / 130: average train loss: 2.47, average train top1: 48.61 average train top5: 68.53
+[11/11 11:05:51][INFO] Prompt_CAM:  245: Training 43 / 130 epoch, with learning rate [0.003819336790143279]
+[11/11 11:07:28][INFO] Prompt_CAM:  265: Epoch 43 / 130: average train loss: 2.44, average train top1: 49.80 average train top5: 69.55
+[11/11 11:07:28][INFO] Prompt_CAM:  245: Training 44 / 130 epoch, with learning rate [0.0037676461546070693]
+[11/11 11:09:05][INFO] Prompt_CAM:  265: Epoch 44 / 130: average train loss: 2.34, average train top1: 51.12 average train top5: 71.01
+[11/11 11:09:05][INFO] Prompt_CAM:  245: Training 45 / 130 epoch, with learning rate [0.003715215541399894]
+[11/11 11:10:41][INFO] Prompt_CAM:  265: Epoch 45 / 130: average train loss: 2.34, average train top1: 51.20 average train top5: 70.77
+[11/11 11:10:41][INFO] Prompt_CAM:  245: Training 46 / 130 epoch, with learning rate [0.0036620755685233997]
+[11/11 11:12:18][INFO] Prompt_CAM:  265: Epoch 46 / 130: average train loss: 2.29, average train top1: 52.29 average train top5: 72.09
+[11/11 11:12:18][INFO] Prompt_CAM:  245: Training 47 / 130 epoch, with learning rate [0.003608257268225304]
+[11/11 11:13:54][INFO] Prompt_CAM:  265: Epoch 47 / 130: average train loss: 2.22, average train top1: 54.50 average train top5: 73.50
+[11/11 11:13:54][INFO] Prompt_CAM:  245: Training 48 / 130 epoch, with learning rate [0.0035537920688774364]
+[11/11 11:15:31][INFO] Prompt_CAM:  265: Epoch 48 / 130: average train loss: 2.21, average train top1: 53.59 average train top5: 73.46
+[11/11 11:15:31][INFO] Prompt_CAM:  245: Training 49 / 130 epoch, with learning rate [0.0034987117766224563]
+[11/11 11:17:07][INFO] Prompt_CAM:  265: Epoch 49 / 130: average train loss: 2.14, average train top1: 55.33 average train top5: 74.16
+[11/11 11:17:07][INFO] Prompt_CAM:  245: Training 50 / 130 epoch, with learning rate [0.003443048556799957]
+[11/11 11:18:44][INFO] Prompt_CAM:  265: Epoch 50 / 130: average train loss: 2.12, average train top1: 56.65 average train top5: 74.53
+[11/11 11:18:44][INFO] Prompt_CAM:  245: Training 51 / 130 epoch, with learning rate [0.003386834915162818]
+[11/11 11:20:20][INFO] Prompt_CAM:  265: Epoch 51 / 130: average train loss: 2.09, average train top1: 56.30 average train top5: 75.67
+[11/11 11:21:01][INFO] Prompt_CAM:  348: Inference (test): loss 0.95, top1 76.77, top5 94.30
+[11/11 11:21:02][INFO] Prompt_CAM:  245: Training 52 / 130 epoch, with learning rate [0.003330103678894757]
+[11/11 11:22:38][INFO] Prompt_CAM:  265: Epoch 52 / 130: average train loss: 1.95, average train top1: 59.21 average train top5: 77.47
+[11/11 11:22:38][INFO] Prompt_CAM:  245: Training 53 / 130 epoch, with learning rate [0.0032728879774401812]
+[11/11 11:24:15][INFO] Prompt_CAM:  265: Epoch 53 / 130: average train loss: 1.93, average train top1: 59.17 average train top5: 78.36
+[11/11 11:24:15][INFO] Prompt_CAM:  245: Training 54 / 130 epoch, with learning rate [0.0032152212231575236]
+[11/11 11:25:51][INFO] Prompt_CAM:  265: Epoch 54 / 130: average train loss: 1.85, average train top1: 60.93 average train top5: 79.51
+[11/11 11:25:51][INFO] Prompt_CAM:  245: Training 55 / 130 epoch, with learning rate [0.0031571370918073685]
+[11/11 11:27:28][INFO] Prompt_CAM:  265: Epoch 55 / 130: average train loss: 1.78, average train top1: 62.52 average train top5: 80.30
+[11/11 11:27:28][INFO] Prompt_CAM:  245: Training 56 / 130 epoch, with learning rate [0.003098669502886751]
+[11/11 11:29:04][INFO] Prompt_CAM:  265: Epoch 56 / 130: average train loss: 1.70, average train top1: 64.89 average train top5: 81.38
+[11/11 11:29:04][INFO] Prompt_CAM:  245: Training 57 / 130 epoch, with learning rate [0.003039852599821132]
+[11/11 11:30:41][INFO] Prompt_CAM:  265: Epoch 57 / 130: average train loss: 1.59, average train top1: 66.73 average train top5: 83.71
+[11/11 11:30:41][INFO] Prompt_CAM:  245: Training 58 / 130 epoch, with learning rate [0.0029807207300255943]
+[11/11 11:32:17][INFO] Prompt_CAM:  265: Epoch 58 / 130: average train loss: 1.60, average train top1: 65.64 average train top5: 83.32
+[11/11 11:32:17][INFO] Prompt_CAM:  245: Training 59 / 130 epoch, with learning rate [0.002921308424846923]
+[11/11 11:33:54][INFO] Prompt_CAM:  265: Epoch 59 / 130: average train loss: 1.54, average train top1: 67.46 average train top5: 84.48
+[11/11 11:33:54][INFO] Prompt_CAM:  245: Training 60 / 130 epoch, with learning rate [0.0028616503793982687]
+[11/11 11:35:30][INFO] Prompt_CAM:  265: Epoch 60 / 130: average train loss: 1.38, average train top1: 70.32 average train top5: 87.12
+[11/11 11:35:30][INFO] Prompt_CAM:  245: Training 61 / 130 epoch, with learning rate [0.0028017814322981805]
+[11/11 11:37:06][INFO] Prompt_CAM:  265: Epoch 61 / 130: average train loss: 1.28, average train top1: 72.09 average train top5: 88.14
+[11/11 11:37:47][INFO] Prompt_CAM:  348: Inference (test): loss 0.89, top1 81.08, top5 95.96
+[11/11 11:37:48][INFO] Prompt_CAM:  245: Training 62 / 130 epoch, with learning rate [0.0027417365453258308]
+[11/11 11:39:24][INFO] Prompt_CAM:  265: Epoch 62 / 130: average train loss: 1.24, average train top1: 71.77 average train top5: 88.24
+[11/11 11:39:24][INFO] Prompt_CAM:  245: Training 63 / 130 epoch, with learning rate [0.0026815507830043254]
+[11/11 11:41:00][INFO] Prompt_CAM:  265: Epoch 63 / 130: average train loss: 1.21, average train top1: 74.01 average train top5: 89.04
+[11/11 11:41:00][INFO] Prompt_CAM:  245: Training 64 / 130 epoch, with learning rate [0.002621259292124005]
+[11/11 11:42:36][INFO] Prompt_CAM:  265: Epoch 64 / 130: average train loss: 1.21, average train top1: 73.06 average train top5: 88.75
+[11/11 11:42:36][INFO] Prompt_CAM:  245: Training 65 / 130 epoch, with learning rate [0.0025608972812177135]
+[11/11 11:44:12][INFO] Prompt_CAM:  265: Epoch 65 / 130: average train loss: 1.14, average train top1: 73.95 average train top5: 89.97
+[11/11 11:44:12][INFO] Prompt_CAM:  245: Training 66 / 130 epoch, with learning rate [0.0025005]
+[11/11 11:45:49][INFO] Prompt_CAM:  265: Epoch 66 / 130: average train loss: 1.10, average train top1: 75.77 average train top5: 89.62
+[11/11 11:45:49][INFO] Prompt_CAM:  245: Training 67 / 130 epoch, with learning rate [0.0024401027187822876]
+[11/11 11:47:25][INFO] Prompt_CAM:  265: Epoch 67 / 130: average train loss: 1.06, average train top1: 76.15 average train top5: 90.39
+[11/11 11:47:25][INFO] Prompt_CAM:  245: Training 68 / 130 epoch, with learning rate [0.0023797407078759956]
+[11/11 11:49:01][INFO] Prompt_CAM:  265: Epoch 68 / 130: average train loss: 1.05, average train top1: 76.59 average train top5: 90.52
+[11/11 11:49:01][INFO] Prompt_CAM:  245: Training 69 / 130 epoch, with learning rate [0.002319449216995675]
+[11/11 11:50:37][INFO] Prompt_CAM:  265: Epoch 69 / 130: average train loss: 0.99, average train top1: 78.26 average train top5: 91.01
+[11/11 11:50:37][INFO] Prompt_CAM:  245: Training 70 / 130 epoch, with learning rate [0.0022592634546741695]
+[11/11 11:52:13][INFO] Prompt_CAM:  265: Epoch 70 / 130: average train loss: 0.97, average train top1: 78.24 average train top5: 91.53
+[11/11 11:52:13][INFO] Prompt_CAM:  245: Training 71 / 130 epoch, with learning rate [0.0021992185677018206]
+[11/11 11:53:49][INFO] Prompt_CAM:  265: Epoch 71 / 130: average train loss: 0.98, average train top1: 77.81 average train top5: 91.38
+[11/11 11:54:30][INFO] Prompt_CAM:  348: Inference (test): loss 0.87, top1 82.48, top5 96.31
+[11/11 11:54:31][INFO] Prompt_CAM:  245: Training 72 / 130 epoch, with learning rate [0.002139349620601731]
+[11/11 11:56:07][INFO] Prompt_CAM:  265: Epoch 72 / 130: average train loss: 0.93, average train top1: 78.96 average train top5: 91.90
+[11/11 11:56:07][INFO] Prompt_CAM:  245: Training 73 / 130 epoch, with learning rate [0.0020796915751530773]
+[11/11 11:57:43][INFO] Prompt_CAM:  265: Epoch 73 / 130: average train loss: 0.92, average train top1: 78.31 average train top5: 92.18
+[11/11 11:57:43][INFO] Prompt_CAM:  245: Training 74 / 130 epoch, with learning rate [0.0020202792699744064]
+[11/11 11:59:19][INFO] Prompt_CAM:  265: Epoch 74 / 130: average train loss: 0.82, average train top1: 81.30 average train top5: 93.37
+[11/11 11:59:19][INFO] Prompt_CAM:  245: Training 75 / 130 epoch, with learning rate [0.001961147400178869]
+[11/11 12:00:55][INFO] Prompt_CAM:  265: Epoch 75 / 130: average train loss: 0.84, average train top1: 81.03 average train top5: 92.63
+[11/11 12:00:55][INFO] Prompt_CAM:  245: Training 76 / 130 epoch, with learning rate [0.0019023304971132495]
+[11/11 12:02:31][INFO] Prompt_CAM:  265: Epoch 76 / 130: average train loss: 0.82, average train top1: 81.45 average train top5: 93.25
+[11/11 12:02:31][INFO] Prompt_CAM:  245: Training 77 / 130 epoch, with learning rate [0.0018438629081926324]
+[11/11 12:04:07][INFO] Prompt_CAM:  265: Epoch 77 / 130: average train loss: 0.82, average train top1: 81.78 average train top5: 93.00
+[11/11 12:04:07][INFO] Prompt_CAM:  245: Training 78 / 130 epoch, with learning rate [0.0017857787768424764]
+[11/11 12:05:43][INFO] Prompt_CAM:  265: Epoch 78 / 130: average train loss: 0.83, average train top1: 80.88 average train top5: 92.90
+[11/11 12:05:43][INFO] Prompt_CAM:  245: Training 79 / 130 epoch, with learning rate [0.001728112022559819]
+[11/11 12:07:19][INFO] Prompt_CAM:  265: Epoch 79 / 130: average train loss: 0.80, average train top1: 81.37 average train top5: 93.80
+[11/11 12:07:19][INFO] Prompt_CAM:  245: Training 80 / 130 epoch, with learning rate [0.0016708963211052431]
+[11/11 12:08:55][INFO] Prompt_CAM:  265: Epoch 80 / 130: average train loss: 0.76, average train top1: 82.47 average train top5: 93.93
+[11/11 12:08:55][INFO] Prompt_CAM:  245: Training 81 / 130 epoch, with learning rate [0.0016141650848371825]
+[11/11 12:10:31][INFO] Prompt_CAM:  265: Epoch 81 / 130: average train loss: 0.77, average train top1: 82.25 average train top5: 93.55
+[11/11 12:11:11][INFO] Prompt_CAM:  348: Inference (test): loss 0.85, top1 84.09, top5 96.93
+[11/11 12:11:12][INFO] Prompt_CAM:  245: Training 82 / 130 epoch, with learning rate [0.001557951443200043]
+[11/11 12:12:48][INFO] Prompt_CAM:  265: Epoch 82 / 130: average train loss: 0.74, average train top1: 82.87 average train top5: 94.12
+[11/11 12:12:48][INFO] Prompt_CAM:  245: Training 83 / 130 epoch, with learning rate [0.0015022882233775444]
+[11/11 12:14:24][INFO] Prompt_CAM:  265: Epoch 83 / 130: average train loss: 0.71, average train top1: 83.39 average train top5: 94.49
+[11/11 12:14:24][INFO] Prompt_CAM:  245: Training 84 / 130 epoch, with learning rate [0.0014472079311225628]
+[11/11 12:16:00][INFO] Prompt_CAM:  265: Epoch 84 / 130: average train loss: 0.73, average train top1: 83.16 average train top5: 94.08
+[11/11 12:16:00][INFO] Prompt_CAM:  245: Training 85 / 130 epoch, with learning rate [0.0013927427317746964]
+[11/11 12:17:36][INFO] Prompt_CAM:  265: Epoch 85 / 130: average train loss: 0.70, average train top1: 83.72 average train top5: 94.22
+[11/11 12:17:36][INFO] Prompt_CAM:  245: Training 86 / 130 epoch, with learning rate [0.0013389244314766003]
+[11/11 12:19:11][INFO] Prompt_CAM:  265: Epoch 86 / 130: average train loss: 0.70, average train top1: 84.04 average train top5: 94.10
+[11/11 12:19:11][INFO] Prompt_CAM:  245: Training 87 / 130 epoch, with learning rate [0.0012857844586001061]
+[11/11 12:20:47][INFO] Prompt_CAM:  265: Epoch 87 / 130: average train loss: 0.71, average train top1: 84.31 average train top5: 94.47
+[11/11 12:20:47][INFO] Prompt_CAM:  245: Training 88 / 130 epoch, with learning rate [0.0012333538453929314]
+[11/11 12:22:23][INFO] Prompt_CAM:  265: Epoch 88 / 130: average train loss: 0.67, average train top1: 84.53 average train top5: 94.50
+[11/11 12:22:23][INFO] Prompt_CAM:  245: Training 89 / 130 epoch, with learning rate [0.0011816632098567217]
+[11/11 12:23:59][INFO] Prompt_CAM:  265: Epoch 89 / 130: average train loss: 0.65, average train top1: 84.99 average train top5: 94.94
+[11/11 12:23:59][INFO] Prompt_CAM:  245: Training 90 / 130 epoch, with learning rate [0.0011307427378670018]
+[11/11 12:25:35][INFO] Prompt_CAM:  265: Epoch 90 / 130: average train loss: 0.68, average train top1: 84.53 average train top5: 94.50
+[11/11 12:25:35][INFO] Prompt_CAM:  245: Training 91 / 130 epoch, with learning rate [0.0010806221655454762]
+[11/11 12:27:11][INFO] Prompt_CAM:  265: Epoch 91 / 130: average train loss: 0.62, average train top1: 85.91 average train top5: 95.32
+[11/11 12:27:52][INFO] Prompt_CAM:  348: Inference (test): loss 0.88, top1 84.55, top5 97.00
+[11/11 12:27:52][INFO] Prompt_CAM:  245: Training 92 / 130 epoch, with learning rate [0.0010313307618949636]
+[11/11 12:29:28][INFO] Prompt_CAM:  265: Epoch 92 / 130: average train loss: 0.59, average train top1: 85.68 average train top5: 95.44
+[11/11 12:29:28][INFO] Prompt_CAM:  245: Training 93 / 130 epoch, with learning rate [0.0009828973117071314]
+[11/11 12:31:04][INFO] Prompt_CAM:  265: Epoch 93 / 130: average train loss: 0.57, average train top1: 87.07 average train top5: 96.06
+[11/11 12:31:04][INFO] Prompt_CAM:  245: Training 94 / 130 epoch, with learning rate [0.0009353500987529858]
+[11/11 12:32:40][INFO] Prompt_CAM:  265: Epoch 94 / 130: average train loss: 0.58, average train top1: 86.65 average train top5: 95.59
+[11/11 12:32:40][INFO] Prompt_CAM:  245: Training 95 / 130 epoch, with learning rate [0.0008887168892659414]
+[11/11 12:34:16][INFO] Prompt_CAM:  265: Epoch 95 / 130: average train loss: 0.54, average train top1: 87.13 average train top5: 96.14
+[11/11 12:34:16][INFO] Prompt_CAM:  245: Training 96 / 130 epoch, with learning rate [0.0008430249157271322]
+[11/11 12:35:52][INFO] Prompt_CAM:  265: Epoch 96 / 130: average train loss: 0.56, average train top1: 87.28 average train top5: 95.94
+[11/11 12:35:52][INFO] Prompt_CAM:  245: Training 97 / 130 epoch, with learning rate [0.0007983008609624008]
+[11/11 12:37:28][INFO] Prompt_CAM:  265: Epoch 97 / 130: average train loss: 0.55, average train top1: 87.10 average train top5: 95.77
+[11/11 12:37:28][INFO] Prompt_CAM:  245: Training 98 / 130 epoch, with learning rate [0.0007545708425602824]
+[11/11 12:39:04][INFO] Prompt_CAM:  265: Epoch 98 / 130: average train loss: 0.53, average train top1: 88.17 average train top5: 95.86
+[11/11 12:39:04][INFO] Prompt_CAM:  245: Training 99 / 130 epoch, with learning rate [0.0007118603976200696]
+[11/11 12:40:40][INFO] Prompt_CAM:  265: Epoch 99 / 130: average train loss: 0.51, average train top1: 88.32 average train top5: 96.16
+[11/11 12:40:40][INFO] Prompt_CAM:  245: Training 100 / 130 epoch, with learning rate [0.000670194467838865]
+[11/11 12:42:16][INFO] Prompt_CAM:  265: Epoch 100 / 130: average train loss: 0.54, average train top1: 87.52 average train top5: 95.91
+[11/11 12:42:16][INFO] Prompt_CAM:  245: Training 101 / 130 epoch, with learning rate [0.0006295973849463326]
+[11/11 12:43:52][INFO] Prompt_CAM:  265: Epoch 101 / 130: average train loss: 0.50, average train top1: 88.64 average train top5: 96.16
+[11/11 12:44:33][INFO] Prompt_CAM:  348: Inference (test): loss 0.96, top1 84.73, top5 96.89
+[11/11 12:44:33][INFO] Prompt_CAM:  245: Training 102 / 130 epoch, with learning rate [0.0005900928564956519]
+[11/11 12:46:09][INFO] Prompt_CAM:  265: Epoch 102 / 130: average train loss: 0.53, average train top1: 87.97 average train top5: 96.04
+[11/11 12:46:09][INFO] Prompt_CAM:  245: Training 103 / 130 epoch, with learning rate [0.000551703952018976]
+[11/11 12:47:45][INFO] Prompt_CAM:  265: Epoch 103 / 130: average train loss: 0.47, average train top1: 89.07 average train top5: 96.46
+[11/11 12:47:45][INFO] Prompt_CAM:  245: Training 104 / 130 epoch, with learning rate [0.0005144530895554715]
+[11/11 12:49:21][INFO] Prompt_CAM:  265: Epoch 104 / 130: average train loss: 0.49, average train top1: 88.70 average train top5: 96.41
+[11/11 12:49:21][INFO] Prompt_CAM:  245: Training 105 / 130 epoch, with learning rate [0.00047836202255981916]
+[11/11 12:50:57][INFO] Prompt_CAM:  265: Epoch 105 / 130: average train loss: 0.52, average train top1: 88.30 average train top5: 95.81
+[11/11 12:50:57][INFO] Prompt_CAM:  245: Training 106 / 130 epoch, with learning rate [0.00044345182719880596]
+[11/11 12:52:33][INFO] Prompt_CAM:  265: Epoch 106 / 130: average train loss: 0.48, average train top1: 88.82 average train top5: 96.06
+[11/11 12:52:33][INFO] Prompt_CAM:  245: Training 107 / 130 epoch, with learning rate [0.0004097428900434383]
+[11/11 12:54:09][INFO] Prompt_CAM:  265: Epoch 107 / 130: average train loss: 0.49, average train top1: 88.85 average train top5: 96.36
+[11/11 12:54:09][INFO] Prompt_CAM:  245: Training 108 / 130 epoch, with learning rate [0.00037725489616375864]
+[11/11 12:55:46][INFO] Prompt_CAM:  265: Epoch 108 / 130: average train loss: 0.49, average train top1: 88.77 average train top5: 96.14
+[11/11 12:55:46][INFO] Prompt_CAM:  245: Training 109 / 130 epoch, with learning rate [0.0003460068176333174]
+[11/11 12:57:21][INFO] Prompt_CAM:  265: Epoch 109 / 130: average train loss: 0.42, average train top1: 90.71 average train top5: 97.04
+[11/11 12:57:21][INFO] Prompt_CAM:  245: Training 110 / 130 epoch, with learning rate [0.00031601690245001854]
+[11/11 12:58:57][INFO] Prompt_CAM:  265: Epoch 110 / 130: average train loss: 0.44, average train top1: 90.07 average train top5: 96.86
+[11/11 12:58:57][INFO] Prompt_CAM:  245: Training 111 / 130 epoch, with learning rate [0.0002873026638798021]
+[11/11 13:00:33][INFO] Prompt_CAM:  265: Epoch 111 / 130: average train loss: 0.45, average train top1: 89.86 average train top5: 96.46
+[11/11 13:01:14][INFO] Prompt_CAM:  348: Inference (test): loss 0.99, top1 85.35, top5 97.01
+[11/11 13:01:14][INFO] Prompt_CAM:  245: Training 112 / 130 epoch, with learning rate [0.0002598808702293884]
+[11/11 13:02:50][INFO] Prompt_CAM:  265: Epoch 112 / 130: average train loss: 0.45, average train top1: 90.09 average train top5: 96.56
+[11/11 13:02:50][INFO] Prompt_CAM:  245: Training 113 / 130 epoch, with learning rate [0.00023376753505406175]
+[11/11 13:04:25][INFO] Prompt_CAM:  265: Epoch 113 / 130: average train loss: 0.43, average train top1: 89.81 average train top5: 97.06
+[11/11 13:04:25][INFO] Prompt_CAM:  245: Training 114 / 130 epoch, with learning rate [0.00020897790780620255]
+[11/11 13:06:01][INFO] Prompt_CAM:  265: Epoch 114 / 130: average train loss: 0.44, average train top1: 89.94 average train top5: 96.67
+[11/11 13:06:01][INFO] Prompt_CAM:  245: Training 115 / 130 epoch, with learning rate [0.000185526464930038]
+[11/11 13:07:37][INFO] Prompt_CAM:  265: Epoch 115 / 130: average train loss: 0.43, average train top1: 90.19 average train top5: 96.79
+[11/11 13:07:37][INFO] Prompt_CAM:  245: Training 116 / 130 epoch, with learning rate [0.00016342690140780535]
+[11/11 13:09:13][INFO] Prompt_CAM:  265: Epoch 116 / 130: average train loss: 0.44, average train top1: 90.17 average train top5: 96.71
+[11/11 13:09:13][INFO] Prompt_CAM:  245: Training 117 / 130 epoch, with learning rate [0.00014269212276227125]
+[11/11 13:10:49][INFO] Prompt_CAM:  265: Epoch 117 / 130: average train loss: 0.42, average train top1: 90.42 average train top5: 97.01
+[11/11 13:10:49][INFO] Prompt_CAM:  245: Training 118 / 130 epoch, with learning rate [0.00012333423752026375]
+[11/11 13:12:25][INFO] Prompt_CAM:  265: Epoch 118 / 130: average train loss: 0.44, average train top1: 89.86 average train top5: 96.62
+[11/11 13:12:25][INFO] Prompt_CAM:  245: Training 119 / 130 epoch, with learning rate [0.00010536455014163902]
+[11/11 13:14:01][INFO] Prompt_CAM:  265: Epoch 119 / 130: average train loss: 0.45, average train top1: 89.87 average train top5: 96.59
+[11/11 13:14:01][INFO] Prompt_CAM:  245: Training 120 / 130 epoch, with learning rate [8.87935544177934e-05]
+[11/11 13:15:37][INFO] Prompt_CAM:  265: Epoch 120 / 130: average train loss: 0.42, average train top1: 90.68 average train top5: 96.74
+[11/11 13:15:37][INFO] Prompt_CAM:  245: Training 121 / 130 epoch, with learning rate [7.363092734358327e-05]
+[11/11 13:17:13][INFO] Prompt_CAM:  265: Epoch 121 / 130: average train loss: 0.41, average train top1: 90.71 average train top5: 97.14
+[11/11 13:17:53][INFO] Prompt_CAM:  348: Inference (test): loss 1.00, top1 85.48, top5 97.22
+[11/11 13:17:54][INFO] Prompt_CAM:  245: Training 122 / 130 epoch, with learning rate [5.988552346623435e-05]
+[11/11 13:19:29][INFO] Prompt_CAM:  265: Epoch 122 / 130: average train loss: 0.43, average train top1: 90.29 average train top5: 96.96
+[11/11 13:19:29][INFO] Prompt_CAM:  245: Training 123 / 130 epoch, with learning rate [4.7565369714536115e-05]
+[11/11 13:21:05][INFO] Prompt_CAM:  265: Epoch 123 / 130: average train loss: 0.41, average train top1: 90.56 average train top5: 96.72
+[11/11 13:21:05][INFO] Prompt_CAM:  245: Training 124 / 130 epoch, with learning rate [3.6677660711338784e-05]
+[11/11 13:22:41][INFO] Prompt_CAM:  265: Epoch 124 / 130: average train loss: 0.41, average train top1: 90.88 average train top5: 96.86
+[11/11 13:22:41][INFO] Prompt_CAM:  245: Training 125 / 130 epoch, with learning rate [2.722875457209772e-05]
+[11/11 13:24:16][INFO] Prompt_CAM:  265: Epoch 125 / 130: average train loss: 0.41, average train top1: 90.51 average train top5: 97.13
+[11/11 13:24:16][INFO] Prompt_CAM:  245: Training 126 / 130 epoch, with learning rate [1.9224169191914094e-05]
+[11/11 13:25:52][INFO] Prompt_CAM:  265: Epoch 126 / 130: average train loss: 0.40, average train top1: 90.74 average train top5: 97.03
+[11/11 13:25:52][INFO] Prompt_CAM:  245: Training 127 / 130 epoch, with learning rate [1.2668579023237255e-05]
+[11/11 13:27:28][INFO] Prompt_CAM:  265: Epoch 127 / 130: average train loss: 0.41, average train top1: 91.31 average train top5: 97.13
+[11/11 13:27:28][INFO] Prompt_CAM:  245: Training 128 / 130 epoch, with learning rate [7.565812346117854e-06]
+[11/11 13:29:03][INFO] Prompt_CAM:  265: Epoch 128 / 130: average train loss: 0.42, average train top1: 90.91 average train top5: 96.72
+[11/11 13:29:03][INFO] Prompt_CAM:  245: Training 129 / 130 epoch, with learning rate [3.918849032599836e-06]
+[11/11 13:30:39][INFO] Prompt_CAM:  265: Epoch 129 / 130: average train loss: 0.41, average train top1: 90.54 average train top5: 96.91
+[11/11 13:30:39][INFO] Prompt_CAM:  245: Training 130 / 130 epoch, with learning rate [1.7298188065577426e-06]
+[11/11 13:32:15][INFO] Prompt_CAM:  265: Epoch 130 / 130: average train loss: 0.40, average train top1: 91.09 average train top5: 96.99
+[11/11 13:32:56][INFO] Prompt_CAM:  348: Inference (test): loss 1.01, top1 85.69, top5 97.22
+[11/11 13:32:56][INFO] Prompt_CAM:   23: ----------- Total Run time : 218.67183658679326 mins-----------

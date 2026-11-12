@@ -1,0 +1,49 @@
+[11/10 12:19:34][INFO] Prompt_CAM:   64: Rank of current process: 0. World size: 1
+[11/10 12:19:34][INFO] Prompt_CAM:   66: Environment info:
+-------------------  --------------------------------------------------
+Python               3.10.21 (main, Aug 27 2026, 14:42:07) [GCC 14.3.0]
+ENV_MODULE           <not set>
+PyTorch              2.6.0+cu124
+PyTorch Debug Build  False
+CUDA available       True
+CUDA ID              0
+GPU 0                NVIDIA RTX A6000
+-------------------  --------------------------------------------------
+PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2024.2-Product Build 20240605 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.5.3 (Git Hash 66f0cb9eb66affd2da3bf5f8d897376f04aae6af)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.4
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 90.1
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=2236df1770800ffea5697b11b0bb0d910b2e59e1, CUDA_VERSION=12.4, CUDNN_VERSION=9.1.0, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.6.0, USE_CUDA=ON, USE_CUDNN=ON, USE_CUSPARSELT=1, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+[11/10 12:19:34][INFO] Prompt_CAM:   70: Training with config:
+[11/10 12:19:34][INFO] Prompt_CAM:   71: Namespace(pretrained_weights='vit_base_patch14_dinov2', drop_path_rate=0.1, model='dinov2', train_type='apm', optimizer='sgd', lr=0.005, epoch=130, warmup_epoch=20, lr_min=1e-06, warmup_lr_init=0, batch_size=16, test_batch_size=32, wd=0.001, momentum=0.9, early_patience=131, data='cub', data_path='./data/images/cub', crop_size=224, final_run=True, normalized=True, vpt_mode=None, vpt_num=200, vpt_layer=None, vpt_dropout=0.1, entropy_weight=0.05, entropy_warmup_epochs=20, topk_weight=0.02, topk_frac=0.1, margin_weight=0.05, margin=0.05, margin_frac=0.5, full=False, gpu_num=1, debug=True, random_seed=42, eval_freq=10, store_ckp=True, final_acc_hp=True, config='experiment/config/apm/dinov2/cub/args.yaml', vis_attn=False, distributed=False, local_rank=0, output_dir='./output/vit_base_patch14_dinov2/cub/linear_sgd/cub/2026-11-10-12:19')
+[11/10 12:19:34][INFO] Prompt_CAM:   74: Start loading cub
+[11/10 12:19:34][INFO] Prompt_CAM:   17: Loading CUB data ...
+[11/10 12:19:34][INFO] Prompt_CAM:   19: Loading training data (final training data for cub)...
+[11/10 12:19:34][INFO] Prompt_CAM:   84: Finish setup loaders
+[11/10 12:19:37][INFO] Prompt_CAM:   31: Trainable params:
+[11/10 12:19:37][INFO] Prompt_CAM:   38: 	head.weight, 768, torch.Size([1, 768])
+[11/10 12:19:37][INFO] Prompt_CAM:   38: 	head.bias, 1, torch.Size([1])
+[11/10 12:19:37][INFO] Prompt_CAM:   38: 	apm.prompt_embeddings, 1843200, torch.Size([12, 200, 768])
+[11/10 12:19:37][INFO] Prompt_CAM:   38: 	apm.log_temp, 1, torch.Size([1])
+[11/10 12:19:37][INFO] Prompt_CAM:   38: 	apm.mixer.weight, 153600, torch.Size([200, 768])
+[11/10 12:19:37][INFO] Prompt_CAM:   85: Total Parameters: 87722498	 Gradient Parameters: 1997570	 Gradient Parameters No Head: 1996801
+[11/10 12:19:37][INFO] Prompt_CAM:   90: total tuned percent:2.28 %
+[11/10 12:19:37][INFO] Prompt_CAM:   91: total tuned percent no head:2.28 %
+[11/10 12:19:37][INFO] Prompt_CAM:   93: Fine-tuned Parameters:
+[11/10 12:19:37][INFO] Prompt_CAM:   96: head.weight
+[11/10 12:19:37][INFO] Prompt_CAM:   96: head.bias
+[11/10 12:19:37][INFO] Prompt_CAM:   96: apm.prompt_embeddings
+[11/10 12:19:37][INFO] Prompt_CAM:   96: apm.log_temp
+[11/10 12:19:37][INFO] Prompt_CAM:   96: apm.mixer.weight
+[11/10 12:19:37][INFO] Prompt_CAM:   76: 	Setting up the optimizer...
+[11/10 12:19:37][INFO] Prompt_CAM:  245: Training 1 / 130 epoch, with learning rate [0.0]

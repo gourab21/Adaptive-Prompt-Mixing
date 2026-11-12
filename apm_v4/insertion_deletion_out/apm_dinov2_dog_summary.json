@@ -1,0 +1,17 @@
+{
+  "method": "APM",
+  "backbone": "DINOv2 ViT-B/14",
+  "dataset": "dog",
+  "checkpoint": "/home/astra/Desktop/XAI/APM_Final/apm_v4/./output/vit_base_patch14_dinov2/dog/linear_sgd/dog/2026-11-10-03:34/model.pt",
+  "n_images": 4162,
+  "target": "gt",
+  "baseline": "gray",
+  "step_fraction": 0.05,
+  "top1_on_sample": 83.61364728495916,
+  "insertion": 0.7328021095130319,
+  "insertion_sem": 0.004688170511072909,
+  "deletion": 0.19078917557785063,
+  "deletion_sem": 0.0026109131067167074,
+  "insertion_correct_only": 0.8485441425295629,
+  "deletion_correct_only": 0.2161433676195171
+}
